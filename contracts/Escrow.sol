@@ -20,5 +20,6 @@ contract Escrow {
         seller = _seller;
         inspector = _inspector;
         lender = _lender;
+        
     }
 }
