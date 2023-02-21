@@ -2,11 +2,7 @@
 pragma solidity ^0.8.0;
 
 interface IERC721 {
-    function transferFrom(
-        address _from,
-        address _to,
-        uint256 _id
-    ) external;
+    function transferFrom(address _from, address _to, uint256 _id) external;
 }
 
 contract Escrow {
@@ -15,11 +11,26 @@ contract Escrow {
     address public inspector;
     address public lender;
 
-    constructor(address _nftAddress, address payable _seller, address _inspector, address _lender){
+    // To check is the property is listed
+    mapping(uint256 => bool) public isListed;
+
+    constructor(
+        address _nftAddress,
+        address payable _seller,
+        address _inspector,
+        address _lender
+    ) {
         nftAddress = _nftAddress;
         seller = _seller;
         inspector = _inspector;
         lender = _lender;
-        
+    }
+
+    // To list property
+    function list(uint256 _nftID) public {
+        // Transfer NFT from seller to this contract
+        IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
+
+        isListed[_nftID] = true;
     }
 }
