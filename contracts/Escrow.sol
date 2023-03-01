@@ -21,11 +21,18 @@ contract Escrow {
         _;
     }
 
+    modifier onlyInspector() {
+        require(msg.sender == inspector, "Only inspector can call this methos");
+        _;
+    }
+
     // To check is the property is listed
     mapping(uint256 => bool) public isListed;
     mapping(uint256 => uint256) public purchasePrice;
     mapping(uint256 => uint256) public escrowAmount;
     mapping(uint256 => address) public buyer;
+    mapping(uint256 => bool) public inspectionPassed;
+    mapping(uint256 => mapping(address => bool)) public approval;
 
     constructor(
         address _nftAddress,
@@ -58,6 +65,19 @@ contract Escrow {
     // Put under contract (only buyer - payable)
     function depositeEarnest(uint256 _nftID) public payable onlyBuyer(_nftID) {
         require(msg.value >= escrowAmount[_nftID]);
+    }
+
+    // Update inspection status (only inspector)
+    function updateInspectionStatus(
+        uint256 _ntfID,
+        bool _passed
+    ) public onlyInspector {
+        inspectionPassed[_ntfID] = _passed;
+    }
+
+    // Approval sale
+    function approvalSale(uint256 _nftID) public {
+        approval[_nftID][msg.sender] = true;
     }
 
     // recieve() external payable{}

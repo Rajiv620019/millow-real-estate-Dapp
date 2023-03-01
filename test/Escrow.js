@@ -104,4 +104,33 @@ describe("Escrow", () => {
       expect(result).to.be.equal(tokens(5));
     });
   });
+
+  // Inspection Status
+  describe("Inspection", () => {
+    it("Updates inspection status", async () => {
+      const transaction = await escrow
+        .connect(inspector)
+        .updateInspectionStatus(1, true);
+      await transaction.wait();
+      const result = await escrow.inspectionPassed(1);
+      expect(result).to.be.equal(true);
+    });
+  });
+
+  // Approval status
+  describe("Approval", () => {
+    it("Updates approval status", async () => {
+      let transaction = await escrow.connect(buyer).approvalSale(1);
+
+      transaction = await escrow.connect(seller).approvalSale(1);
+
+      transaction = await escrow.connect(lender).approvalSale(1);
+
+      await transaction.wait();
+
+      expect(await escrow.approval(1, buyer.address)).to.be.equal(true);
+      expect(await escrow.approval(1, seller.address)).to.be.equal(true);
+      expect(await escrow.approval(1, lender.address)).to.be.equal(true);
+    });
+  });
 });
