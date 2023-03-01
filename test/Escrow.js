@@ -39,7 +39,9 @@ describe("Escrow", () => {
     await transcation.wait();
 
     // List property
-    transcation = await escrow.connect(seller).list(1);
+    transcation = await escrow
+      .connect(seller)
+      .list(1, buyer.address, tokens(10), tokens(5));
     await transcation.wait();
   });
 
@@ -73,6 +75,33 @@ describe("Escrow", () => {
 
     it("Updates owner", async () => {
       expect(await realEstate.ownerOf(1)).to.be.equal(escrow.address);
+    });
+
+    it("Returns buyer", async () => {
+      const result = await escrow.buyer(1);
+      expect(result).to.be.equal(buyer.address);
+    });
+
+    it("Returns purchase price", async () => {
+      const result = await escrow.purchasePrice(1);
+      expect(result).to.be.equal(tokens(10));
+    });
+
+    it("Returns escrow amount", async () => {
+      const result = await escrow.escrowAmount(1);
+      expect(result).to.be.equal(tokens(5));
+    });
+  });
+
+  // Deposit ether
+  describe("Deposit", () => {
+    it("Updates contract balance", async () => {
+      const transaction = await escrow
+        .connect(buyer)
+        .depositeEarnest(1, { value: tokens(5) });
+      await transaction.wait();
+      const result = await escrow.getBalance();
+      expect(result).to.be.equal(tokens(5));
     });
   });
 });
