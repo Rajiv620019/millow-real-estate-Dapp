@@ -133,4 +133,34 @@ describe("Escrow", () => {
       expect(await escrow.approval(1, lender.address)).to.be.equal(true);
     });
   });
+
+  describe("sale", async () => {
+    beforeEach(async () => {
+      let transaction = await escrow
+        .connect(buyer)
+        .depositeEarnest(1, { value: tokens(5) });
+      await transaction.wait();
+
+      transaction = await escrow
+        .connect(inspector)
+        .updateInspectionStatus(1, true);
+      await transaction.wait();
+
+      transaction = await escrow.connect(buyer).approvalSale(1);
+      await transaction.wait();
+
+      transaction = await escrow.connect(seller).approvalSale(1);
+      await transaction.wait();
+
+      transaction = await escrow.connect(lender).approvalSale(1);
+      await transaction.wait();
+
+      await lender.sendTransaction({ to: escrow.address, value: tokens(5) });
+
+      transaction = await escrow.connect(seller).finalizeSale;
+      await transaction.wait();
+    });
+
+    it("works", async () => {});
+  });
 });
