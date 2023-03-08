@@ -4,10 +4,17 @@
 // You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
 // will compile your contracts, add the Hardhat Runtime Environment's members to the
 // global scope, and execute the script.
+const { ethers } = require("hardhat");
 const hre = require("hardhat");
 
 async function main() {
+  // Setup accounts
+  [buyer, seller, inspector, lender] = await ethers.getSigners();
 
+  // Deploy Real Estate
+  const RealEstate = await ethers.getContractFactory("RealEstate");
+  const realEstate = await RealEstate.deploy();
+  await realEstate.deployed();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
