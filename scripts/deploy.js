@@ -29,6 +29,16 @@ async function main() {
       );
     await transaction.wait();
   }
+
+  // Deploy Escrow contract
+  const Escrow = await ethers.ContractFactory("Escrow");
+  const escrow = await Escrow.deploy(
+    realEstate.address,
+    seller.address,
+    inspector.address,
+    lender.address
+  );
+  await escrow.deployed();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
