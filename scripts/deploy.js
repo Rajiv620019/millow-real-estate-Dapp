@@ -35,7 +35,7 @@ async function main() {
   }
 
   // Deploy Escrow contract
-  const Escrow = await ethers.ContractFactory("Escrow");
+  const Escrow = await ethers.getContractFactory("Escrow");
   const escrow = await Escrow.deploy(
     realEstate.address,
     seller.address,
