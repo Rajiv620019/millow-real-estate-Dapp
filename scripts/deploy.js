@@ -15,6 +15,20 @@ async function main() {
   const RealEstate = await ethers.getContractFactory("RealEstate");
   const realEstate = await RealEstate.deploy();
   await realEstate.deployed();
+
+  console.log(`Deployed Real Estate contract at: ${realEstate.address}`);
+  console.log(`Minting 3 properties...\n`);
+
+  for (let i = 0; i < 3; i++) {
+    const transaction = await realEstate
+      .connect(seller)
+      .mint(
+        `"https://ipfs.io/ipfs/QmQUozrHLAusXDxrvsESJ3PYB3rUeUuBAvVWw6nop2uu7c/${
+          i + 1
+        }.png"`
+      );
+    await transaction.wait();
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere
