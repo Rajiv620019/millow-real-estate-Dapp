@@ -41,11 +41,25 @@ async function main() {
   await escrow.deployed();
 
   for (let i = 0; i < 3; i++) {
+    // Approve properties..
     let transaction = await realEstate
       .connect(seller)
       .approve(escrow.address, i + 1);
     await transaction.wait();
   }
+
+  // Listing properties
+  transaction = await escrow
+    .connect(seller)
+    .list(1, buyer.address, tokens(20), tokens(10));
+
+  transaction = await escrow
+    .connect(seller)
+    .list(2, buyer.address, tokens(15), tokens(5));
+
+  transaction = await escrow
+    .connect(seller)
+    .list(1, buyer.address, tokens(10), tokens(5));
 }
 
 // We recommend this pattern to be able to use async/await everywhere
