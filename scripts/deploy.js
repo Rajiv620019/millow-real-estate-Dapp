@@ -7,6 +7,10 @@
 const { ethers } = require("hardhat");
 const hre = require("hardhat");
 
+const tokens = (n) => {
+  return ethers.utils.parseUnits(n.toString(), "ether");
+};
+
 async function main() {
   // Setup accounts
   [buyer, seller, inspector, lender] = await ethers.getSigners();
@@ -23,9 +27,9 @@ async function main() {
     const transaction = await realEstate
       .connect(seller)
       .mint(
-        `"https://ipfs.io/ipfs/QmQUozrHLAusXDxrvsESJ3PYB3rUeUuBAvVWw6nop2uu7c/${
+        `https://ipfs.io/ipfs/QmQUozrHLAusXDxrvsESJ3PYB3rUeUuBAvVWw6nop2uu7c/${
           i + 1
-        }.png"`
+        }.json`
       );
     await transaction.wait();
   }
@@ -60,6 +64,8 @@ async function main() {
   transaction = await escrow
     .connect(seller)
     .list(1, buyer.address, tokens(10), tokens(5));
+
+  console.log("Finished");
 }
 
 // We recommend this pattern to be able to use async/await everywhere
