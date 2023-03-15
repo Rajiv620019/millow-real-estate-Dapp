@@ -20,6 +20,9 @@ function App() {
   const [escrow, setEscrow] = useState(null);
 
   const [account, setAccount] = useState(null);
+
+  const [homes, setHomes] = useState(null);
+
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
@@ -34,6 +37,16 @@ function App() {
     );
 
     const totalSupply = await realEstate.totalSupply();
+    const homes = [];
+
+    for (var i = 1; i <= totalSupply; i++) {
+      const uri = await realEstate.tokenURI(i);
+      const response = await fetch(uri);
+      const metadata = await response.json();
+      homes.push(metadata);
+    }
+
+    setHomes(homes);
 
     // Escrow contract
     const escrow = new ethers.Contract(
