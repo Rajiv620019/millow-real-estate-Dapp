@@ -14,6 +14,15 @@ import Escrow from "./abis/Escrow.json";
 import config from "./config.json";
 
 function App() {
+  const loadBlockchainData = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    console.log(provider);
+  };
+
+  useEffect(() => {
+    loadBlockchainData();
+  }, []);
+
   return (
     <div>
       <div className="cards__section">
