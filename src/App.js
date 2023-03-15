@@ -17,12 +17,31 @@ import config from "./config.json";
 function App() {
   const [provider, setProvider] = useState(null);
 
+  const [escrow, setEscrow] = useState(null);
+
   const [account, setAccount] = useState(null);
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
 
     const network = await provider.getNetwork();
+
+    // RealEstate contract
+    const realEstate = new ethers.Contract(
+      config[network.chainId].realEstate.address,
+      RealEstate,
+      provider
+    );
+
+    const totalSupply = await realEstate.totalSupply();
+
+    // Escrow contract
+    const escrow = new ethers.Contract(
+      config[network.chainId].escrow.address,
+      Escrow,
+      provider
+    );
+    setEscrow(escrow);
 
     window.ethereum.on("accountsChanged", async () => {
       const accounts = await window.ethereum.request({
