@@ -21,7 +21,9 @@ function App() {
 
   const [account, setAccount] = useState(null);
 
-  const [homes, setHomes] = useState(null);
+  const [homes, setHomes] = useState([]);
+
+  const [home, setHome] = useState({});
 
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -69,12 +71,18 @@ function App() {
     loadBlockchainData();
   }, []);
 
+  const toggleProp = (home) => {
+    setHome(home);
+
+    toggle ? setToggle(false) : setToggle(true);
+  };
+
   return (
     <div>
       <Navigation account={account} setAccount={setAccount} />
       <Search />
       <div className="cards__section">
-        <h3>Homes for you</h3>
+        <h3>Homes For You</h3>
 
         <hr />
 
@@ -82,20 +90,31 @@ function App() {
           {homes.map((home, index) => (
             <div className="card" key={index}>
               <div className="card__image">
-                <img src="" alt="Home" />
+                <img src={home.image} alt="Home" />
               </div>
               <div className="card__info">
-                <h4>1 ETH</h4>
+                <h4>{home.attributes[0].value} ETH</h4>
                 <p>
-                  <strong>1</strong> beds |<strong>2</strong> ba |
-                  <strong>3</strong> sqft
+                  <strong>{home.attributes[2].value}</strong> Bedrooms |
+                  <strong>{home.attributes[3].value}</strong> Bathrooms |
+                  <strong>{home.attributes[4].value}</strong> sqft
                 </p>
-                <p>123 Fake Street</p>
+                <p>{home.address}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {toggle && (
+        <Home
+          home={home}
+          provider={provider}
+          account={account}
+          escrow={escrow}
+          togglePop={toggleProp}
+        />
+      )}
     </div>
   );
 }
