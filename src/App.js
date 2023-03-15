@@ -13,10 +13,14 @@ import Escrow from "./abis/Escrow.json";
 // Config
 import config from "./config.json";
 
+// Load blockchain data using ethers js
 function App() {
   const loadBlockchainData = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
-    console.log(provider);
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    console.log(accounts);
   };
 
   useEffect(() => {
