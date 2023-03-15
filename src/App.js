@@ -71,7 +71,7 @@ function App() {
     loadBlockchainData();
   }, []);
 
-  const toggleProp = (home) => {
+  const togglePop = (home) => {
     setHome(home);
 
     toggle ? setToggle(false) : setToggle(true);
@@ -112,7 +112,7 @@ function App() {
           provider={provider}
           account={account}
           escrow={escrow}
-          togglePop={toggleProp}
+          togglePop={togglePop}
         />
       )}
     </div>
