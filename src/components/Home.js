@@ -19,16 +19,29 @@ const Home = ({ home, provider, escrow, togglePop }) => {
     const buyer = await escrow.buyer(home.id);
     setBuyer(buyer);
 
+    const hasBought = await escrow.approval(home.id, buyer);
+    setHasBought(hasBought);
+
     // Seller
     const seller = await escrow.seller();
     setSeller(seller);
 
+    const hasSold = await escrow.approval(home.id, seller);
+    setHasSold(hasSold);
+
     // Lender
     const lender = await escrow.lender();
     setLender(lender);
+
+    const hasLended = await escrow.approval(home.id, lender);
+    setHasLended(hasLended);
+
     // Inspector
     const inspector = await escrow.inspector();
     setInspector(inspector);
+
+    const hasInspected = await escrow.approval(home.id, inspector);
+    setHasInspected(hasInspected);
   };
 
   return (
