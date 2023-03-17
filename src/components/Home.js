@@ -40,7 +40,7 @@ const Home = ({ home, provider, escrow, togglePop }) => {
         <ul>
           {home.attributes.map((attribute, index) => (
             <li key={index}>
-              <strong>{attribute.trait_tpye}</strong>: {attribute.value}
+              <strong>{attribute.trait_type}</strong> : {attribute.value}
             </li>
           ))}
         </ul>
