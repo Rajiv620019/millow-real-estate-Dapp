@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import close from "../assets/close.svg";
 
 const Home = ({ home, provider, escrow, togglePop }) => {
+  const [hasBought, setHasBought] = useState(false);
+  const [hasLended, setHasLended] = useState(false);
+  const [hasInspected, setHasInspected] = useState(false);
+  const [hasSold, setHasSold] = useState(false);
+
   const [buyer, setBuyer] = useState(null);
   const [lender, setLender] = useState(null);
   const [inspector, setInspector] = useState(null);
