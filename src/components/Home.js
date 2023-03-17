@@ -40,8 +40,15 @@ const Home = ({ home, provider, escrow, togglePop }) => {
     const inspector = await escrow.inspector();
     setInspector(inspector);
 
-    const hasInspected = await escrow.approval(home.id, inspector);
+    const hasInspected = await escrow.inspectionPassed(home.id, inspector);
     setHasInspected(hasInspected);
+  };
+
+  const fetchOwner = async () => {
+    if (await escrow.isListed(home.id)) return;
+
+    const owner = await escrow.buyer(home.id);
+    setOwner(owner);
   };
 
   return (
