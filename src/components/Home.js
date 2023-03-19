@@ -66,9 +66,37 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
     setHasBought(true);
   };
 
-  const inspectHandler = async () => {};
+  const inspectHandler = async () => {
+    const signer = await provider.getSigner();
 
-  const lendHandler = async () => {};
+    // Inspector updates status
+    const transaction = await escrow
+      .connect(signer)
+      .updateInspectionStatus(home.id, true);
+    await transaction.wait();
+
+    setHasInspected(true);
+  };
+
+  const lendHandler = async () => {
+    const signer = await provider.getSigner();
+
+    // Lender approves
+    const transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+
+    // Lender send funds to contract
+    const lendAmount =
+      (await escrow.purchasePrice(home.id)) -
+      (await escrow.escrowAmount(home.id));
+    await signer.sendTransaction({
+      to: escrow.address,
+      value: lendAmount.toString(),
+      gasLimit: 60000,
+    });
+
+    setHasLended(true);
+  };
 
   const sellHandler = async () => {};
 
