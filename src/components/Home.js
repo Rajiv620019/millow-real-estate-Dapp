@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import close from "../assets/close.svg";
 
-const Home = ({ home, provider, escrow, togglePop }) => {
+const Home = ({ home, provider, account, escrow, togglePop }) => {
   const [hasBought, setHasBought] = useState(false);
   const [hasLended, setHasLended] = useState(false);
   const [hasInspected, setHasInspected] = useState(false);
@@ -80,21 +80,19 @@ const Home = ({ home, provider, escrow, togglePop }) => {
           </div>
         ) : (
           <div>
-            {(account === inspector) ? (
-
-            ) : (account === lender) ? (
-
-            ) : (account === seller) ? (
-
+            {account === inspector ? (
+              <button className="home__buy">Approve Inspection</button>
+            ) : account === lender ? (
+              <button className="home__buy">Approve and Lend</button>
+            ) : account === seller ? (
+              <button className="home__buy">Approve and sell</button>
             ) : (
               <button className="home__buy">Buy</button>
             )}
 
-          <button className="home__contact">Contact Agent</button>
+            <button className="home__contact">Contact Agent</button>
           </div>
         )}
-
-        
 
         <hr />
 
