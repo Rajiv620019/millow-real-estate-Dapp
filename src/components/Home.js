@@ -74,10 +74,27 @@ const Home = ({ home, provider, escrow, togglePop }) => {
           <h2>{home.attributes[0].value} ETH</h2>
         </div>
 
-        <div>
-          <button className="home__buy">Buy</button>
-        </div>
-        <button className="home__contact">Contact Agent</button>
+        {owner ? (
+          <div className="home__owned">
+            Owned by {owner.slice(0, 6) + "..." + owner.slice(38, 42)}
+          </div>
+        ) : (
+          <div>
+            {(account === inspector) ? (
+
+            ) : (account === lender) ? (
+
+            ) : (account === seller) ? (
+
+            ) : (
+              <button className="home__buy">Buy</button>
+            )}
+
+          <button className="home__contact">Contact Agent</button>
+          </div>
+        )}
+
+        
 
         <hr />
 
