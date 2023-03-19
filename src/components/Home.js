@@ -51,7 +51,20 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
     setOwner(owner);
   };
 
-  const buyHandler = async () => {};
+  const buyHandler = async () => {
+    const escrowAmount = await escrow.escrowAmount(home.id);
+    const signer = await provider.getSigner();
+
+    // Buyer deposit earnest
+    let transaction = await escrow.connect(signer).depositEarnest(home.id);
+    await transaction.wait();
+
+    // Buyer approves
+    transaction = await escrow.connect(signer).approveSale(home.id);
+    await transaction.wait();
+
+    setHasBought(true);
+  };
 
   const inspectHandler = async () => {};
 
